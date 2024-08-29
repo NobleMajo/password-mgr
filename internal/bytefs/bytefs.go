@@ -1,18 +1,9 @@
-package utils
+package bytefs
 
 import (
-	"crypto/rand"
 	"fmt"
 	"os"
 )
-
-func RandomBytes(n uint32) ([]byte, error) {
-	buf := make([]byte, n)
-	if _, err := rand.Read(buf); err != nil {
-		return nil, err
-	}
-	return buf, nil
-}
 
 func ReadFile(filepath string) ([]byte, error) {
 	dat, err := os.ReadFile(filepath)
@@ -28,10 +19,4 @@ func WriteFile(filepath string, data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func Maybe(err error) {
-	if err != nil {
-		panic(err)
-	}
 }

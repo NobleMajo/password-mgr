@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/aminerwx/password-mgr/core"
-	"github.com/aminerwx/password-mgr/utils"
+	"github.com/aminerwx/password-mgr/cmd/core"
+	"github.com/aminerwx/password-mgr/internal/bytefs"
 )
 
 func main() {
@@ -28,27 +28,33 @@ func main() {
 	}
 
 	hash, err := core.CreateHash("password", options)
-	utils.Maybe(err)
+	maybe(err)
 
 	match, _, err := core.VerifyHash("password", hash)
-	utils.Maybe(err)
+	maybe(err)
 
 	k, _, _, err := core.DecodeHash(hash)
-	utils.Maybe(err)
+	maybe(err)
 
 	if match {
 		fmt.Println("Password is matching.")
 		ciphertxt, err := core.EncryptAES([]byte("SecretMsg"), []byte(k))
-		utils.Maybe(err)
+		maybe(err)
 
 		plaintext, err := core.DecryptAES(ciphertxt, []byte(k))
-		utils.Maybe(err)
+		maybe(err)
 
 		cipher := hex.EncodeToString(ciphertxt)
 		plain := string(plaintext)
 		data := fmt.Sprintf("Secret Key: \n\t%v\nAES-256:\n\tciphertext: \n\t\t%v\n\tplaintext: \n\t\t%v\n", hash, cipher, plain)
-		utils.WriteFile("./out/data", []byte(data))
+		bytefs.WriteFile("./out/data", []byte(data))
 	} else {
 		fmt.Println("Incorrect password.")
+	}
+}
+
+func maybe(err error) {
+	if err != nil {
+		panic(err)
 	}
 }

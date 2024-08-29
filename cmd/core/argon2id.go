@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/aminerwx/password-mgr/utils"
+	"github.com/aminerwx/password-mgr/internal/randomb"
 	"golang.org/x/crypto/argon2"
 )
 
@@ -26,7 +26,7 @@ func GenerateKey(passphrase string, options *Options) (key, salt []byte, err err
 		return nil, nil, errors.New("empty passphrase")
 	}
 
-	salt, err = utils.RandomBytes(options.SaltLength)
+	salt, err = randomb.RandomBytes(options.SaltLength)
 	if err != nil {
 		return nil, nil, err
 	}
