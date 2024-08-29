@@ -1,15 +1,14 @@
 BINARY_NAME=password-mgr
 
 build:
-	mkdir bin
-	GOARCH=amd64 GOOS=linux go build -o bin/$(BINARY_NAME)-linux main.go
+	GOARCH=amd64 GOOS=linux go build -o $(BINARY_NAME)-linux cmd/main.go
 
 run:
-	go run main.go
+	go run cmd/main.go
 
 clean:
 	go clean
-	rm -rf ./bin
+	rm -rf $(BINARY_NAME)-linux
 
 dep:
 	go mod download
